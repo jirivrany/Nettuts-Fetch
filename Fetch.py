@@ -103,9 +103,12 @@ class FetchCommand(sublime_plugin.WindowCommand):
             except:
                 sublime.error_message('ERROR: Could not create directory.')
                 return False
-
-        self.window.active_view().run_command("fetch_get", {"option":
+        try:        
+            self.window.active_view().run_command("fetch_get", {"option":
                     "package", "url": self.packageUrl, "location": location})
+        except AttributeError:
+             sublime.error_message('ERROR: open at last one tab.')
+             return False   
 
     def list_files(self):
         files = self.s.get('files')
